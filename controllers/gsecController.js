@@ -43,9 +43,8 @@ module.exports.makeRequest = async (req, res) => {
 
 module.exports.getRequestsByMe = async (req, res) => {
     try {
-        
-        const myRequests = await Booking.find();
-        res.status(200).json({ message: "successfully fetched all approved requests", approvedRequests });
+        const ltBookings = await Booking.find({ gsecId: userId }).populate('gsecId');
+        res.status(200).json({ message: "successfully fetched all requests", ltBookings });
     }
     catch (e) {
         res.status(500).json({ success: false, msg: "error " });
