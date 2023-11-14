@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser')
 const authRoutes = require('./routes/authRoutes')
 const gsecRoutes = require('./routes/gsecRoutes')
 const assistantRegistrarRoutes = require('./routes/assistantRegistrarRoutes')
-// const guardRoutes = require('./routes/guardRoutes')
+const guardRoutes = require('./routes/guardRoutes')
 // const facultyMentorRoutes = require('./routes/facultyMentorRoutes')
 // const systemAdministratorRoutes = require('./routes/systemAdministratorRoutes')
 const jwt = require("jsonwebtoken");
@@ -35,7 +35,7 @@ connectDB();
 // app.use('/auth', authRoutes);
 // app.use('/facultyMentor', facultyMentorRoutes);
 // app.use('/gsec', gsecRoutes);
-// app.use('/guard', guardRoutes);
+app.use('/guard', guardRoutes);
 // app.use('/systemAdministrator', systemAdministratorRoutes);
 app.use('/assistantRegistrar', assistantRegistrarRoutes);
 

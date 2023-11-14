@@ -4,7 +4,7 @@ const roleMiddleware = require('../middlewares/roleBasedMiddlewares')
 const guardController = require('../controllers/guardController')
 
 
-router.get('/approvedrequests', roleMiddleware(['guard']),guardController.getApprovedRequests);
+router.get('/approvedrequests',guardController.getApprovedRequests);
 
 
 

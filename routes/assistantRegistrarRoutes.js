@@ -4,8 +4,8 @@ const roleMiddleware = require('../middlewares/roleBasedMiddlewares')
 const assistantRegistrarController = require('../controllers/assistantRegistrarController')
 
 
-router.post('/allrequest',assistantRegistrarController.getAllRequests )
+router.get('/allrequest',assistantRegistrarController.getAllRequests )
 
-router.get('myrequests', roleMiddleware(['gsec'], gsecController.getRequestsByMe))
+router.put('/reviewed', assistantRegistrarController.approveOrReject)
 
   module.exports = router;
