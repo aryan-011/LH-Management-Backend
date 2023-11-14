@@ -4,8 +4,8 @@ const AssistantRegistrar = require('../models/AssistantRegistrar');
 
 module.exports.getAllRequests = async (req, res) => {
     try {
-        const pendingRequests = await Booking.find({ status: 'pending' })
-        res.status(200).json({ message: "successfully fetched all pending requests", pendingRequests });
+        const pendingRequests = await Booking.find({ assistantRegistrarStatus: 'pending' })
+        res.status(200).json({ message: "successfully fetched all pending requests"}, pendingRequests);
     }
     catch (e) {
         res.status(500).json({ success: false, msg: "error " });

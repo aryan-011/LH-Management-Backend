@@ -34,7 +34,7 @@ module.exports.makeRequest = async (req, res) => {
         // const isGsec = await Gsec.findOne({ email })
         const existingReqFroLT = await Booking.findOne({ ltNumber })
          {
-            if (existingReqFroLT || inUseLT) {
+            if (existingReqFroLT) {
                 res.json({ message: "LT in use" })
             }
             else {
@@ -58,6 +58,7 @@ module.exports.makeRequest = async (req, res) => {
                         facultyMentorEmail,
                     })
                     booking.save();
+                    console.log(booking)
                     return res.status(200).json({
                         success: true,
                         msg: "Successfully Make Request for an LT ",
