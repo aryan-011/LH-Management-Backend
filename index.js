@@ -32,9 +32,9 @@ app.use(express.json());
 
 
 connectDB();
-// app.use('/auth', authRoutes);
+app.use('/auth', authRoutes);
 // app.use('/facultyMentor', facultyMentorRoutes);
-// app.use('/gsec', gsecRoutes);
+app.use('/gsec', gsecRoutes);
 app.use('/guard', guardRoutes);
 app.use('/systemAdministrator', systemAdministratorRoutes);
 app.use('/assistantRegistrar', assistantRegistrarRoutes);
