@@ -22,9 +22,9 @@ module.exports.approveOrReject = async (req, res) => {
             return res.status(404).json({ message: 'Booking not found' });
         }
         if (action === 'approve') {
-            booking.status = 'approved';
+            booking.assistantRegistrarStatus = 'approved';
         } else if (action === 'reject') {
-            booking.status = 'rejected';
+            booking.assistantRegistrarStatus = 'rejected';
         } else {
             return res.status(400).json({ message: 'Invalid action' });
         }

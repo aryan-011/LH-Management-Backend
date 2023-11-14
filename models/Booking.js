@@ -30,11 +30,22 @@ const bookingSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    status: {
+    facultyStatus: {
         type: String,
         enum: ['pending', 'approved', 'rejected'],
         default: 'pending'
     },
+    systemAdministratorStatus: {
+        type: String,
+        enum: ['pending', 'approved', 'rejected'],
+        default: 'pending'
+    },
+    assistantRegistrarStatus: {
+        type: String,
+        enum: ['pending', 'approved', 'rejected'],
+        default: 'pending'
+    },
+    
     facultyMentorEmail: {
         type: String,
         required: true,

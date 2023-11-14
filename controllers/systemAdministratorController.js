@@ -21,9 +21,9 @@ module.exports.approveOrReject = async (req, res) => {
             return res.status(404).json({ message: 'Booking not found' });
         }
         if (action === 'approve') {
-            booking.status = 'approved';
+            booking.systemAdministratorStatus = 'approved';
         } else if (action === 'reject') {
-            booking.status = 'rejected';
+            booking.systemAdministratorStatus = 'rejected';
         } else {
             return res.status(400).json({ message: 'Invalid action' });
         }
