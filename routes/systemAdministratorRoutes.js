@@ -3,10 +3,9 @@ const router = express.Router();
 const roleMiddleware = require('../middlewares/roleBasedMiddlewares')
 const systemAdministratorController = require('../controllers/systemAdministratorController')
 
+router.get('/allrequest',systemAdministratorController.getAllRequests )
 
-router.get('/allrequests', roleMiddleware(['systemAdministrator']),systemAdministratorController.getAllRequests);
-
-  router.put('/reviewed' ,roleMiddleware(['systemAdministrator']), systemAdministratorController.approveOrReject)
+router.put('/reviewed', systemAdministratorController.approveOrReject)
 
 
   module.exports = router;

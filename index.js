@@ -7,7 +7,7 @@ const gsecRoutes = require('./routes/gsecRoutes')
 const assistantRegistrarRoutes = require('./routes/assistantRegistrarRoutes')
 const guardRoutes = require('./routes/guardRoutes')
 // const facultyMentorRoutes = require('./routes/facultyMentorRoutes')
-// const systemAdministratorRoutes = require('./routes/systemAdministratorRoutes')
+const systemAdministratorRoutes = require('./routes/systemAdministratorRoutes')
 const jwt = require("jsonwebtoken");
 const { connectDB } = require("./config/database");
 const expressSession = require('express-session')
@@ -36,7 +36,7 @@ connectDB();
 // app.use('/facultyMentor', facultyMentorRoutes);
 // app.use('/gsec', gsecRoutes);
 app.use('/guard', guardRoutes);
-// app.use('/systemAdministrator', systemAdministratorRoutes);
+app.use('/systemAdministrator', systemAdministratorRoutes);
 app.use('/assistantRegistrar', assistantRegistrarRoutes);
 
 app.listen(9000, () => {
