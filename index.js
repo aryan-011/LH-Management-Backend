@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser')
-// const authRoutes = require('./routes/authRoutes')
+const authRoutes = require('./routes/authRoutes')
 const gsecRoutes = require('./routes/gsecRoutes')
 const assistantRegistrarRoutes = require('./routes/gsecRoutes')
 const guardRoutes = require('./routes/gsecRoutes')
@@ -23,8 +23,16 @@ app.use(expressSession({
     cookie: { secure: false }, // Set to true if using HTTPS
 }));
 
+app.use(
+    express.urlencoded({ extended: true })
+);
+    
+app.use(express.json());
+
+
+
 connectDB();
-// app.use('/auth', authRoutes);
+app.use('/auth', authRoutes);
 app.use('/facultyMentor', facultyMentorRoutes);
 app.use('/gsec', gsecRoutes);
 app.use('/guard', guardRoutes);

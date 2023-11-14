@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const bookingSchema = new mongoose.Schema({
-    gsecId: {
-         type: mongoose.Schema.Types.ObjectId, 
-         ref: 'User', 
-         required: true 
-        },
+    // gsecId: {
+    //      type: mongoose.Schema.Types.ObjectId, 
+    //      ref: 'User', 
+    //      required: true 
+    //     },
     ltNumber: {
         type: Number,
         required: true,

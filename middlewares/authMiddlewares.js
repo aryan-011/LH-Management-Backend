@@ -1,6 +1,5 @@
 // middleware/authMiddleware.js
 const jwt = require('jsonwebtoken');
-const { secretKey } = require('../config/database');
 
 const authenticate = (req, res, next) => {
   const token = req.cookies.jwt;

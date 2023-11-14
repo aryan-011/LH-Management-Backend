@@ -1,3 +1,4 @@
-module.exports = {
-  secretKey: 'your-secret-key',
-};
+
+// const secretKey = 'your-secret-key'
+
+// module.exports = secretKey;

@@ -2,13 +2,39 @@ const express = require('express');
 const Gsec = require('../models/gsec');
 const Booking = require('../models/Booking');
 
+
+const verifyToken = (req, res, next) => {
+  const token = req.headers.authorization; // Assuming the token is in the Authorization header
+
+  if (!token) {
+    return res.status(401).json({ message: 'Unauthorized: No token provided' });
+  }
+
+  // Verify and decode the token
+  jwt.verify(token, secretKey, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: 'Unauthorized: Invalid token' });
+    }
+
+    // Attach the decoded payload to the request for use in subsequent middleware or routes
+    req.user = decoded;
+
+    // Check if the user has the required role
+    if (decoded.role !== 'gsec') {
+      return res.status(403).json({ message: 'Forbidden: Insufficient privileges' });
+    }
+
+    next();
+  });
+};
+
 module.exports.makeRequest = async (req, res) => {
     try {
         const { ltNumber, date, reason, bookedFor, facultyMentorEmail, startTime, endTime } = req.body;
-        const isGsec = await Gsec.findOne({ email })
+        // const isGsec = await Gsec.findOne({ email })
         const existingReqFroLT = await Booking.findOne({ ltNumber })
-        if (isGsec) {
-            if (existingReqFroLT) {
+         {
+            if (existingReqFroLT || inUseLT) {
                 res.json({ message: "LT in use" })
             }
             else {
@@ -42,11 +68,10 @@ module.exports.makeRequest = async (req, res) => {
                 }
             }
         }
-        else{
-            res.json({message: "Only Gsec can apply for an LT"})
-        }
+        
     }
     catch (error) {
+        console.log(error);
         return res.status(500).json({
             status: 500,
             message: "Internal server error",

@@ -1,31 +1,93 @@
 // controllers/authController.js
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const { secretKey } = require('../config/config');
+const User = require('../models/user');
+const dotenv = require('dotenv')
 
 
-exports.login = async (req, res) => {
+
+module.exports.signup = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const { email, password, role } = req.body;
 
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ message: 'Invalid username or password' });
+    // Check if the email is already registered
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Email is already registered' });
     }
 
-    const token = jwt.sign({ _id: user._id, name: user.name, role: user.role }, secretKey, { expiresIn: '1h' });
+    // Hash the password before saving it to the database
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Set JWT as a cookie
-    res.cookie('jwt', token, { httpOnly: true, secure: false }); // Set to true if using HTTPS
+    // Create a new user
+    const newUser = new User({
+      email,
+      password: hashedPassword,
+      role, // Assuming you have a 'role' field in your user schema
+    });
 
-    res.json({ message: 'Login successful', token });
+    // Save the user to the database
+    await newUser.save();
+
+    // Generate a JWT token for the newly registered user
+    const token = jwt.sign({ userId: newUser.id, email: newUser.email, role: newUser.role }, process.env.secretKey);
+
+    // Set the JWT token in a cookie
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
+
+    res.status(201).json({ message: 'Signup successful', user: { email: newUser.email, role: newUser.role } });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
-exports.logout = (req, res) => {
+module.exports.login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Find user in the database
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    // Compare the provided password with the hashed password in the database
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    // Generate a JWT token
+    const token = jwt.sign({ userId: user.id, email: user.email, role: user.role }, process.env.secretKey);
+
+    // Set the JWT token in a cookie
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
+
+    // Set user data in the session (if using session)
+    req.session.user = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      token,
+    };
+
+    res.json({ message: 'Login successful', user: req.session.user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+module.exports.logout = async (req, res) => {
   // Clear the JWT cookie
   res.clearCookie('jwt');
   res.json({ message: 'Logout successful' });
