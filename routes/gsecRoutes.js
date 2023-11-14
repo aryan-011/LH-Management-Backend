@@ -8,6 +8,6 @@ router.post('/makerequest', roleMiddleware(['gsec']),gsecController.makeRequest,
     res.json({ message: 'This route is accessible to GSEC only' });
   } );
 
-
+router.get('myrequests', roleMiddleware(['gsec'], gsecController.getRequestsByMe))
 
   module.exports = router;
