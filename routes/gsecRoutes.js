@@ -6,6 +6,6 @@ const gsecController = require('../controllers/gsecController')
 
 router.post('/makerequest',gsecController.makeRequest )
 
-router.get('myrequests', roleMiddleware(['gsec'], gsecController.getRequestsByMe))
+router.get('/myrequests', gsecController.getRequestsByMe)
 
   module.exports = router;

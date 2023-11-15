@@ -3,30 +3,30 @@ const Gsec = require('../models/gsec');
 const Booking = require('../models/Booking');
 
 
-const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization; // Assuming the token is in the Authorization header
+// const verifyToken = (req, res, next) => {
+//   const token = req.headers.authorization; // Assuming the token is in the Authorization header
 
-  if (!token) {
-    return res.status(401).json({ message: 'Unauthorized: No token provided' });
-  }
+//   if (!token) {
+//     return res.status(401).json({ message: 'Unauthorized: No token provided' });
+//   }
 
-  // Verify and decode the token
-  jwt.verify(token, secretKey, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ message: 'Unauthorized: Invalid token' });
-    }
+//   // Verify and decode the token
+//   jwt.verify(token, secretKey, (err, decoded) => {
+//     if (err) {
+//       return res.status(401).json({ message: 'Unauthorized: Invalid token' });
+//     }
 
-    // Attach the decoded payload to the request for use in subsequent middleware or routes
-    req.user = decoded;
+//     // Attach the decoded payload to the request for use in subsequent middleware or routes
+//     req.user = decoded;
 
-    // Check if the user has the required role
-    if (decoded.role !== 'gsec') {
-      return res.status(403).json({ message: 'Forbidden: Insufficient privileges' });
-    }
+//     // Check if the user has the required role
+//     if (decoded.role !== 'gsec') {
+//       return res.status(403).json({ message: 'Forbidden: Insufficient privileges' });
+//     }
 
-    next();
-  });
-};
+//     next();
+//   });
+// };
 
 module.exports.makeRequest = async (req, res) => {
     try {
@@ -88,6 +88,7 @@ module.exports.makeRequest = async (req, res) => {
 module.exports.getRequestsByMe = async (req, res) => {
     try {
         const query = {
+          
             $and: [
                 { gsecId: userId },
               { assistantRegistrarStatus: 'approved' },
@@ -100,6 +101,7 @@ module.exports.getRequestsByMe = async (req, res) => {
         res.status(200).json({ message: "successfully fetched all requests", ltBookings });
     }
     catch (e) {
+      console.log(e)
         res.status(500).json({ success: false, msg: "error " });
     }
 }
