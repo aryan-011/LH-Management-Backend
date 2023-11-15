@@ -10,7 +10,11 @@ const bookingSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    date: {
+    startDate: {
+        type: Date,
+        required: true,
+    },
+    endDate: {
         type: Date,
         required: true,
     },
@@ -30,6 +34,16 @@ const bookingSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    bookedBy: {
+        type: String,
+        required: true
+    },
+    avSupport: {
+        type: String,
+        enum: ['yes', 'no'],
+        required: true,
+    },
+
     facultyStatus: {
         type: String,
         enum: ['pending', 'approved', 'rejected'],

@@ -30,7 +30,7 @@ const verifyToken = (req, res, next) => {
 
 module.exports.makeRequest = async (req, res) => {
     try {
-        const { ltNumber, date, reason, bookedFor, facultyMentorEmail, startTime, endTime } = req.body;
+        const { ltNumber, startDate, endDate, reason, bookedFor, bookedBy, avSupport, facultyMentorEmail, startTime, endTime } = req.body;
         // const isGsec = await Gsec.findOne({ email })
         const existingReqFroLT = await Booking.findOne({ ltNumber })
          {
@@ -40,7 +40,8 @@ module.exports.makeRequest = async (req, res) => {
             else {
                 const query = {
                     $and: [
-                      { date: date },
+                      { startDate: startDate },
+                      { endDate: endDate },
                       { startTime: startTime },
                       { endTime: endTime },
                     ]
@@ -50,11 +51,14 @@ module.exports.makeRequest = async (req, res) => {
                 {
                     const booking = await Booking.create({
                         ltNumber,
-                        date,
+                        startDate,
+                        endDate,
                         startTime,
                         endTime,
                         reason,
                         bookedFor,
+                        bookedBy,
+                        avSupport,
                         facultyMentorEmail,
                     })
                     booking.save();
