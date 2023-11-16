@@ -1,10 +1,20 @@
 // const express = require('express');
-// const Booking = require('../models/Booking')
+// const Booking = require('../models/Booking');
+// const Faculty = require('../models/faculty')
+// const User = require('../models/user');
 
 
-// module.exports.getAllRequests = async (req, res) => {
+// module.exports.getPendingRequests = async (req, res) => {
 //     try {
-//         const pendingRequests = await Booking.find({ status: 'pending' })
+//         const clubForBooked = Booking.find({clubName})
+//         const findClub = Faculty.find({clubName: clubForBooked})
+//         const query = {
+//             $and: [
+//                 {findClub},
+//                 {facultyStatus : 'pending'}
+//             ]
+//           };
+//         const pendingRequests = await Booking.find(query);
 //         res.status(200).json({ message: "successfully fetched all pending requests", pendingRequests });
 //     }
 //     catch (e) {
@@ -12,6 +22,24 @@
 //     }
 // }
 
+
+// module.exports.getApprovedRequests = async (req, res) => {
+//     try {
+//         const clubForBooked = Booking.find({clubName})
+//         const findClub = Faculty.find({clubName: clubForBooked})
+//         const query = {
+//             $and: [
+//                 {findClub},
+//                 {facultyStatus : 'approved'}
+//             ]
+//           };
+//         const approvedRequests = await Booking.find(query);
+//         res.status(200).json({ message: "successfully fetched all pending requests", approvedRequests });
+//     }
+//     catch (e) {
+//         res.status(500).json({ success: false, msg: "error " });
+//     }
+// }
 
 
 // module.exports.approveOrReject = async (req, res) => {

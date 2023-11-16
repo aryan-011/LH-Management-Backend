@@ -34,6 +34,10 @@ const bookingSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    clubName: {
+        type: String,
+        required: true,
+    }, 
     bookedBy: {
         type: String,
         required: true
