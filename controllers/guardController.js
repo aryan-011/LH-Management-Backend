@@ -7,7 +7,7 @@ module.exports.getApprovedRequests = async (req, res) => {
             $and: [
               { assistantRegistrarStatus: 'approved' },
               { systemAdministratorStatus: 'approved' },
-              { facultyMentorStatus: 'approved' },
+              { facultyStatus: 'approved' },
             ]
           };
         const approvedRequests = await Booking.find(query)

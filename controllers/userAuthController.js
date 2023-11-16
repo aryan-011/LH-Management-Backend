@@ -28,9 +28,9 @@ module.exports.signup = async (req, res) => {
 
     // Save the user to the database
     await newUser.save();
-
+secretKey = 'your-secret-key'
     // Generate a JWT token for the newly registered user
-    const token = jwt.sign({ userId: newUser.id, email: newUser.email, role: newUser.role }, process.env.secretKey);
+    const token = jwt.sign({ userId: newUser.id, email: newUser.email, role: newUser.role }, secretKey);
 
     // Set the JWT token in a cookie
     res.cookie('jwt', token, {
@@ -64,7 +64,10 @@ module.exports.login = async (req, res) => {
     }
 
     // Generate a JWT token
-    const token = jwt.sign({ userId: user.id, email: user.email, role: user.role }, process.env.secretKey);
+    const secretKey = process.env.JWT_SECRET || 'your-secret-key';
+    const token = jwt.sign({ userId: user.id, email: user.email, role: user.role }, secretKey, {
+      expiresIn: '1d', // Token expiration time
+    });
 
     // Set the JWT token in a cookie
     res.cookie('jwt', token, {
@@ -82,7 +85,7 @@ module.exports.login = async (req, res) => {
 
     res.json({ message: 'Login successful', user: req.session.user });
   } catch (error) {
-    console.error(error);
+    console.error('Login error:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };

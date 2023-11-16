@@ -4,7 +4,13 @@ const SystemAdministrator = require('../models/systemAdministrator');
 
 module.exports.getPendingRequests = async (req, res) => {
     try {
-        const pendingRequests = await Booking.find({ systemAdministratorStatus: 'pending' })
+        const query = {
+            $and: [
+              {systemAdministratorStatus: 'pending'},
+              {avSupport: 'yes'}
+            ]
+          };
+        const pendingRequests = await Booking.find(query)
         res.status(200).json({ message: "successfully fetched all pending requests", pendingRequests});
     }
     catch (e) {
@@ -14,7 +20,13 @@ module.exports.getPendingRequests = async (req, res) => {
 
 module.exports.getApprovedRequests = async (req, res) => {
     try {
-        const approvedRequests = await Booking.find({ systemAdministratorStatus: 'approved' })
+        const query = {
+            $and: [
+              {systemAdministratorStatus: 'approved'},
+              {avSupport : 'yes'}
+            ]
+          };
+        const approvedRequests = await Booking.find(query)
         res.status(200).json({ message: "successfully fetched all pending requests", approvedRequests});
     }
     catch (e) {
@@ -24,8 +36,15 @@ module.exports.getApprovedRequests = async (req, res) => {
 
 module.exports.approveOrReject = async (req, res) => {
     try {
+        const query = {
+            $and: [
+              {systemAdministratorStatus: 'pending'},
+              {avSupport: 'yes'}
+            ]
+          };
         const { action } = req.body;
-        const booking = await Booking.findOneAndUpdate({ systemAdministratorStatus: 'pending' });
+        
+        const booking = await Booking.findOneAndUpdate(query);
         if (!booking) {
             return res.status(404).json({ message: 'Booking not found' });
         }
