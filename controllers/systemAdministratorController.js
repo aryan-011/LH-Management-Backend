@@ -2,7 +2,7 @@ const express = require('express');
 const Booking = require('../models/Booking')
 const SystemAdministrator = require('../models/systemAdministrator');
 
-module.exports.getAllRequests = async (req, res) => {
+module.exports.getPendingRequests = async (req, res) => {
     try {
         const pendingRequests = await Booking.find({ systemAdministratorStatus: 'pending' })
         res.status(200).json({ message: "successfully fetched all pending requests", pendingRequests});
@@ -12,7 +12,15 @@ module.exports.getAllRequests = async (req, res) => {
     }
 }
 
-
+module.exports.getApprovedRequests = async (req, res) => {
+    try {
+        const approvedRequests = await Booking.find({ systemAdministratorStatus: 'approved' })
+        res.status(200).json({ message: "successfully fetched all pending requests", approvedRequests});
+    }
+    catch (e) {
+        res.status(500).json({ success: false, msg: "error " });
+    }
+}
 
 module.exports.approveOrReject = async (req, res) => {
     try {
