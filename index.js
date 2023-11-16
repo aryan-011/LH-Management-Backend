@@ -17,7 +17,7 @@ const expressSession = require('express-session')
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(expressSession({
-    secret: 'your-secret-key',
+    secret: process.env.secretKey,
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false }, // Set to true if using HTTPS
