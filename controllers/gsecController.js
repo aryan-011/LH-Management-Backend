@@ -94,7 +94,7 @@ module.exports.getApprovedRequestsByMe = async (req, res) => {
             const query = {
           
                 $and: [
-                    { gsecId: userId },
+                    // { gsecId: userId },
                     {systemAdministratorStatus: 'approved'},
                   { assistantRegistrarStatus: 'approved' },
                   { facultyStatus: 'approved' },
@@ -108,7 +108,7 @@ module.exports.getApprovedRequestsByMe = async (req, res) => {
             const query = {
           
                 $and: [
-                    { gsecId: userId },
+                    // { gsecId: userId },
                   { assistantRegistrarStatus: 'approved' },
                   { facultyStatus: 'approved' },
                   // Add more conditions as needed
@@ -132,7 +132,7 @@ module.exports.getRejectedRequestsByMe = async (req, res) => {
         {
             const query1 = {
                 $and: [
-                    { gsecId: userId },
+                    // { gsecId: userId },
                     {systemAdministratorStatus: 'rejected'},
                   { assistantRegistrarStatus: 'rejected' },
                   { facultyStatus: 'rejected' },
@@ -141,7 +141,7 @@ module.exports.getRejectedRequestsByMe = async (req, res) => {
               };
               const query2 = {
                 $and: [
-                    { gsecId: userId },
+                    // { gsecId: userId },
                     {systemAdministratorStatus: 'rejected'},
                   { assistantRegistrarStatus: 'rejected' },
                   { facultyStatus: 'approved' },
@@ -151,7 +151,7 @@ module.exports.getRejectedRequestsByMe = async (req, res) => {
               
               const query3 = {
                 $and: [
-                    { gsecId: userId },
+                    // { gsecId: userId },
                     {systemAdministratorStatus: 'rejected'},
                   { assistantRegistrarStatus: 'approved' },
                   { facultyStatus: 'rejected' },
@@ -160,7 +160,7 @@ module.exports.getRejectedRequestsByMe = async (req, res) => {
               };
               const query4 = {
                 $and: [
-                    { gsecId: userId },
+                    // { gsecId: userId },
                     {systemAdministratorStatus: 'approved'},
                   { assistantRegistrarStatus: 'rejected' },
                   { facultyStatus: 'rejected' },
@@ -169,7 +169,7 @@ module.exports.getRejectedRequestsByMe = async (req, res) => {
               };
               const query5 = {
                 $and: [
-                    { gsecId: userId },
+                    // { gsecId: userId },
                     {systemAdministratorStatus: 'rejected'},
                   { assistantRegistrarStatus: 'approved' },
                   { facultyStatus: 'approved' },
@@ -178,7 +178,7 @@ module.exports.getRejectedRequestsByMe = async (req, res) => {
               };
               const query6 = {
                 $and: [
-                    { gsecId: userId },
+                    // { gsecId: userId },
                     {systemAdministratorStatus: 'approved'},
                   { assistantRegistrarStatus: 'approved' },
                   { facultyStatus: 'rejected' },
@@ -187,7 +187,7 @@ module.exports.getRejectedRequestsByMe = async (req, res) => {
               };
               const query7 = {
                 $and: [
-                    { gsecId: userId },
+                    // { gsecId: userId },
                     {systemAdministratorStatus: 'approved'},
                   { assistantRegistrarStatus: 'rejected' },
                   { facultyStatus: 'approved' },
@@ -208,7 +208,7 @@ module.exports.getRejectedRequestsByMe = async (req, res) => {
             const query1 = {
           
                 $and: [
-                    { gsecId: userId },
+                    // { gsecId: userId },
                   { assistantRegistrarStatus: 'rejected' },
                   { facultyStatus: 'rejected' },
                   // Add more conditions as needed
@@ -217,7 +217,7 @@ module.exports.getRejectedRequestsByMe = async (req, res) => {
               const query2 = {
           
                 $and: [
-                    { gsecId: userId },
+                    // { gsecId: userId },
                   { assistantRegistrarStatus: 'approved' },
                   { facultyStatus: 'rejected' },
                   // Add more conditions as needed
@@ -226,7 +226,7 @@ module.exports.getRejectedRequestsByMe = async (req, res) => {
               const query3 = {
           
                 $and: [
-                    { gsecId: userId },
+                    // { gsecId: userId },
                   { assistantRegistrarStatus: 'rejected' },
                   { facultyStatus: 'approved' },
                   // Add more conditions as needed
