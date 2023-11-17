@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const roleMiddleware = require('../middlewares/roleBasedMiddlewares')
 const systemAdministratorController = require('../controllers/systemAdministratorController')
-const {authorize} = require('../middlewares/authMiddlewares');
+const {authenticate,authorize} = require('../middlewares/authMiddlewares');
 
-router.get('/pendingrequests', authorize, systemAdministratorController.getPendingRequests);
-router.get('/approvedrequests', authorize, systemAdministratorController.getApprovedRequests);
-router.put('/reviewed', authorize, systemAdministratorController.approveOrReject);
+router.get('/pendingrequests', authenticate, roleMiddleware(['systemAdministrator']), systemAdministratorController.getPendingRequests);
+router.get('/approvedrequests', authenticate, roleMiddleware(['systemAdministrator']), systemAdministratorController.getApprovedRequests);
+router.put('/reviewed', authenticate, roleMiddleware(['systemAdministrator']), systemAdministratorController.approveOrReject);
 
 
   module.exports = router;

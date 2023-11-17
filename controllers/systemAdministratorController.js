@@ -42,9 +42,9 @@ module.exports.approveOrReject = async (req, res) => {
               {avSupport: 'yes'}
             ]
           };
-        const { action } = req.body;
+        const { id, action } = req.body;
         
-        const booking = await Booking.findOneAndUpdate(query);
+        const booking = await Booking.findByIdAndUpdate(id);
         if (!booking) {
             return res.status(404).json({ message: 'Booking not found' });
         }
