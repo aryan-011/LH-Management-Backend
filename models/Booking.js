@@ -30,10 +30,7 @@ const bookingSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    bookedFor: {
-        type: String,
-        required: true,
-    },
+
     clubName: {
         type: String,
         required: true,
