@@ -9,6 +9,7 @@ const guardRoutes = require('./routes/guardRoutes')
 const facultyMentorRoutes = require('./routes/facultyMentorRoutes')
 const systemAdministratorRoutes = require('./routes/systemAdministratorRoutes')
 const jwt = require("jsonwebtoken");
+const verifyToken = require("./middlewares/verifyToken")
 const { connectDB } = require("./config/database");
 const expressSession = require('express-session')
 //middlewares
@@ -38,6 +39,16 @@ app.use('/gsec', gsecRoutes);
 app.use('/guard', guardRoutes);
 app.use('/systemAdministrator', systemAdministratorRoutes);
 app.use('/assistantRegistrar', assistantRegistrarRoutes);
+
+app.get('/api/user', verifyToken, (req, res) => {
+    // The user object is attached to the request in the verifyToken middleware
+    const userData = req.user;
+  
+    // You can perform additional actions here, such as fetching user data from a database
+  
+    res.json({ user: userData });
+  });
+  
 
 app.listen(9000, () => {
     console.log("connected!");
