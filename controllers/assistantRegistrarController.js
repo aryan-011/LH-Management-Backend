@@ -26,13 +26,6 @@ module.exports.approveOrReject = async (req, res) => {
     try {
         // const {id} = req.params;
         const { id, action } = req.body;
-        const query = {
-          
-            $and: [
-                {id},
-              { assistantRegistrarStatus: 'pending' },
-            ]
-          };
         const booking = await Booking.findByIdAndUpdate(id);
         if (!booking) {
             return res.status(404).json({ message: 'Booking not found' });

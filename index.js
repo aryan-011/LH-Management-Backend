@@ -41,11 +41,7 @@ app.use('/systemAdministrator', systemAdministratorRoutes);
 app.use('/assistantRegistrar', assistantRegistrarRoutes);
 
 app.get('/api/user', verifyToken, (req, res) => {
-    // The user object is attached to the request in the verifyToken middleware
-    const userData = req.user;
-  
-    // You can perform additional actions here, such as fetching user data from a database
-  
+    const userData = req.user;  
     res.json({ user: userData });
   });
   
