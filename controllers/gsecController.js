@@ -357,6 +357,23 @@ module.exports.availableLTs = async (req, res) => {
             const available = Booking.find({ query })
             res.status(200).json({ message: "successfully fetched all pending requests", available });
         }
+        else{
+            const query = {
+
+                $and: [
+                    // { gsecId: userId },
+                    { assistantRegistrarStatus: 'approved' },
+                    { facultyStatus: 'approved' },
+                    {startDate: startDate},
+                    {endDate: endDate},
+                    {startTime: startTime},
+                    {endTime: endTime},
+                    // Add more conditions as needed
+                ]
+            };
+            const available = Booking.find({ query })
+            res.status(200).json({ message: "successfully fetched all pending requests", available });
+        }
         
     }
     catch (e) {
