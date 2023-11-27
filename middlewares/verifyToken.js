@@ -4,7 +4,7 @@ const secretKey = 'your-secret-key'; // Replace with your actual secret key
 
 // Middleware to verify the token
 const verifyToken = (req, res, next) => {
-  const token = req.headers['authorization'];
+  const token = req.cookies.jwt;
 
   if (!token) {
     return res.status(401).json({ error: 'Unauthorized - Token missing' });

@@ -332,3 +332,35 @@ module.exports.getPendingRequestsByMe = async (req, res) => {
         res.status(500).json({ success: false, msg: "error " });
     }
 }
+
+
+module.exports.availableLTs = async (req, res) => {
+    try {
+        const { startDate, endDate, startTime, endTime } = req.body;
+        const findAvSupport = await Booking.find({ avSupport: 'yes' })
+        if(findAvSupport)
+        {
+            const query = {
+
+                $and: [
+                    // { gsecId: userId },
+                    { assistantRegistrarStatus: 'approved' },
+                    { systemAdministratorStatus: 'approved' },
+                    { facultyStatus: 'approved' },
+                    {startDate: startDate},
+                    {endDate: endDate},
+                    {startTime: startTime},
+                    {endTime: endTime},
+                    // Add more conditions as needed
+                ]
+            };
+            const available = Booking.find({ query })
+            res.status(200).json({ message: "successfully fetched all pending requests", available });
+        }
+        
+    }
+    catch (e) {
+        console.log(e)
+        res.status(500).json({ success: false, msg: "error " });
+    }
+}

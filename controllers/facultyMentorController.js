@@ -6,7 +6,7 @@ const User = require('../models/user');
 
 module.exports.getAllRequests = async (req, res) => {
     try {
-        const id = req.body;
+        const id = req.params;
         const findMentor = User.findById({id})
         const clubForBooked = Booking.find({clubName})
         const findClub = Faculty.find({clubName: clubForBooked})

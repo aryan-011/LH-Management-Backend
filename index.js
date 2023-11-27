@@ -12,6 +12,7 @@ const jwt = require("jsonwebtoken");
 const verifyToken = require("./middlewares/verifyToken")
 const { connectDB } = require("./config/database");
 const expressSession = require('express-session')
+var cors = require('cors');
 //middlewares
 
 
