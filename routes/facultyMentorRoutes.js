@@ -6,9 +6,8 @@ const facultyMentorController = require('../controllers/facultyMentorController'
 
 
 
-router.get('/pendingrequests', authenticate, roleMiddleware(['facultyMentor']),  facultyMentorController.getPendingRequests);
+router.get('/allrequests', authenticate, roleMiddleware(['facultyMentor']),  facultyMentorController.getAllRequests);
 
-router.get('/pendingrequests', authenticate, roleMiddleware(['facultyMentor']), facultyMentorController.getApprovedRequests);
 
 router.put('/reviewed', authenticate, roleMiddleware(['facultyMentor']), facultyMentorController.approveOrReject);
 

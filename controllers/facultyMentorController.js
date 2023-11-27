@@ -4,42 +4,58 @@ const Faculty = require('../models/faculty')
 const User = require('../models/user');
 
 
-module.exports.getPendingRequests = async (req, res) => {
+module.exports.getAllRequests = async (req, res) => {
     try {
         const clubForBooked = Booking.find({clubName})
         const findClub = Faculty.find({clubName: clubForBooked})
-        const query = {
+        const query1 = {
             $and: [
                 {findClub},
                 {facultyStatus : 'pending'}
             ]
           };
-        const pendingRequests = await Booking.find(query);
-        res.status(200).json({ message: "successfully fetched all pending requests", pendingRequests });
-    }
-    catch (e) {
-        res.status(500).json({ success: false, msg: "error " });
-    }
-}
-
-
-module.exports.getApprovedRequests = async (req, res) => {
-    try {
-        const clubForBooked = Booking.find({clubName})
-        const findClub = Faculty.find({clubName: clubForBooked})
-        const query = {
+          const query2 = {
             $and: [
                 {findClub},
                 {facultyStatus : 'approved'}
             ]
           };
-        const approvedRequests = await Booking.find(query);
-        res.status(200).json({ message: "successfully fetched all pending requests", approvedRequests });
+          const query3 = {
+            $and: [
+                {findClub},
+                {facultyStatus : 'rejected'}
+            ]
+          };
+        const pendingRequests = await Booking.find(query1);
+        const approvedRequests = await Booking.find(query2);
+        const rejectedRequests = await Booking.find(query3);
+
+        
+        res.status(200).json({ message: "successfully fetched all pending requests", pendingRequests, approvedRequests, rejectedRequests });
     }
     catch (e) {
         res.status(500).json({ success: false, msg: "error " });
     }
 }
+
+
+// module.exports.getApprovedRequests = async (req, res) => {
+//     try {
+//         const clubForBooked = Booking.find({clubName})
+//         const findClub = Faculty.find({clubName: clubForBooked})
+//         const query = {
+//             $and: [
+//                 {findClub},
+//                 {facultyStatus : 'approved'}
+//             ]
+//           };
+//         const approvedRequests = await Booking.find(query);
+//         res.status(200).json({ message: "successfully fetched all pending requests", approvedRequests });
+//     }
+//     catch (e) {
+//         res.status(500).json({ success: false, msg: "error " });
+//     }
+// }
 
 
 module.exports.approveOrReject = async (req, res) => {

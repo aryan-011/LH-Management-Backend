@@ -5,9 +5,7 @@ const roleMiddleware = require('../middlewares/roleBasedMiddlewares')
 const assistantRegistrarController = require('../controllers/assistantRegistrarController')
 
 
-router.get('/pendingrequests', authenticate, roleMiddleware(['assistantRegistrar']), assistantRegistrarController.getPendingRequests);
-
-router.get('/approvedrequests', authenticate, roleMiddleware(['assistantRegistrar']), assistantRegistrarController.getApprovedRequests);
+router.get('/allrequests', authenticate, roleMiddleware(['assistantRegistrar']), assistantRegistrarController.getAllRequests);
 
 router.put('/reviewed', authenticate, roleMiddleware(['assistantRegistrar']), assistantRegistrarController.approveOrReject);
 

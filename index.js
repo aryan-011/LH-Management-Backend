@@ -42,7 +42,7 @@ app.use('/assistantRegistrar', assistantRegistrarRoutes);
 
 app.get('/api/user', verifyToken, (req, res) => {
     const userData = req.user;  
-    res.json({ user: userData });
+    res.status(200).json({ user: userData });
   });
   
 
