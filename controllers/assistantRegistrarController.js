@@ -44,8 +44,8 @@ module.exports.approveOrReject = async (req, res) => {
         // Save the updated booking
         await booking.save();
 
-        res.json({ message: `Booking ${action}d successfully`, booking});
+        res.status(200).json({ message: `Booking ${action}d successfully`, booking});
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message,message:'some error from our side' });
     }
 }
