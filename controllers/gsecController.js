@@ -9,38 +9,83 @@ module.exports.makeRequest = async (req, res) => {
         const { ltNumber, startDate, endDate, reason, clubName, bookedBy, avSupport, facultyMentorEmail, startTime, endTime } = req.body;
 
         {
-            const query = {
-                $and: [
-                    { ltNumber: ltNumber },
-                    { startDate: startDate },
-                    { endDate: endDate },
-                    { startTime: startTime },
-                    { endTime: endTime },
-                ]
-            };
-            const inUseLT = Booking.findOne(query);
-            if (inUseLT) {
-                const booking = await Booking.create({
-                    ltNumber,
-                    startDate,
-                    endDate,
-                    startTime,
-                    endTime,
-                    reason,
-                    bookedBy,
-                    avSupport,
-                    facultyMentorEmail,
-                    clubName,
+            const findAvSupport = await Booking.find({ avSupport: 'yes' })
+            if (findAvSupport) {
+                const query = {
+                    $and: [
+                        { ltNumber: ltNumber },
+                        { assistantRegistrarStatus: 'approved' },
+                        { systemAdministratorStatus: 'approved' },
+                        { facultyStatus: 'approved' },
+                    ]
+                };
+                const inUseLT = await Booking.find(query);
+                inUseLT.map((booking) => {
+                    if ((booking.startDate < startDate && booking.endDate > startDate) || (booking.startDate < endDate && booking.endDate > endDate)) {
+                        return res.status(200).json({msg : "LT Already booked",success:false})
+                    }
                 })
-                booking.save();
-                console.log(booking)
-                return res.status(200).json({
-                    success: true,
-                    msg: "Successfully Make Request for an LT ",
-                });
+                if (inUseLT) {
+                    const booking = await Booking.create({
+                        ltNumber,
+                        startDate,
+                        endDate,
+                        startTime,
+                        endTime,
+                        reason,
+                        bookedBy,
+                        avSupport,
+                        facultyMentorEmail,
+                        clubName,
+                    })
+                    booking.save();
+                    console.log(booking)
+                    return res.status(200).json({
+                        success: true,
+                        msg: "Successfully Make Request for an LT ",
+                    });
+                }
+                else {
+                    res.json({ message: "This LT is in use in the following date and time. Choose any other time slot." })
+                }
             }
-            else {
-                res.json({ message: "This LT is in use in the following date and time. Choose any other time slot." })
+            else{
+                const query = {
+                    $and: [
+                        { ltNumber: ltNumber },
+                        { assistantRegistrarStatus: 'approved' },
+                        { facultyStatus: 'approved' },
+                    ]
+                };
+                const inUseLT = await Booking.find(query);
+                inUseLT.map((booking) => {
+                    if ((booking.startDate < startDate && booking.endDate > startDate) || (booking.startDate < endDate && booking.endDate > endDate)) {
+                        return res.status(200).json({msg : "LT Already booked", success:false})
+                    }
+                })
+                if (inUseLT) {
+                    const booking = await Booking.create({
+                        ltNumber,
+                        startDate,
+                        endDate,
+                        startTime,
+                        endTime,
+                        reason,
+                        bookedBy,
+                        avSupport,
+                        facultyMentorEmail,
+                        clubName,
+                    })
+                    booking.save();
+                    console.log(booking)
+                    return res.status(200).json({
+                        success: true,
+                        msg: "Successfully Make Request for an LT ",
+                    });
+                }
+                else {
+                    res.json({ message: "This LT is in use in the following date and time. Choose any other time slot." })
+                }
             }
         }
     }
@@ -334,50 +379,55 @@ module.exports.getPendingRequestsByMe = async (req, res) => {
 }
 
 
-module.exports.availableLTs = async (req, res) => {
-    try {
-        const { startDate, endDate, startTime, endTime } = req.body;
-        const findAvSupport = await Booking.find({ avSupport: 'yes' })
-        if(findAvSupport)
-        {
-            const query = {
+// module.exports.availableLTs = async (req, res) => {
+//     try {
+//         const { ltNumber, startDate, endDate, startTime, endTime } = req.body;
+//         const findAvSupport = await Booking.find({ avSupport: 'yes' })
+//         if (findAvSupport) {
+//             const query = {
 
-                $and: [
-                    // { gsecId: userId },
-                    { assistantRegistrarStatus: 'approved' },
-                    { systemAdministratorStatus: 'approved' },
-                    { facultyStatus: 'approved' },
-                    {startDate: startDate},
-                    {endDate: endDate},
-                    {startTime: startTime},
-                    {endTime: endTime},
-                    // Add more conditions as needed
-                ]
-            };
-            const available = Booking.find({ query })
-            res.status(200).json({ message: "successfully fetched all pending requests", available });
-        }
-        else{
-            const query = {
+//                 $and: [
+//                     { ltNumber: ltNumber },
+//                     { assistantRegistrarStatus: 'approved' },
+//                     { systemAdministratorStatus: 'approved' },
+//                     { facultyStatus: 'approved' },
+//                     // {startDate: startDate},
+//                     // {endDate: endDate},
+//                     // {startTime: startTime},
+//                     // {endTime: endTime},
 
-                $and: [
-                    // { gsecId: userId },
-                    { assistantRegistrarStatus: 'approved' },
-                    { facultyStatus: 'approved' },
-                    {startDate: startDate},
-                    {endDate: endDate},
-                    {startTime: startTime},
-                    {endTime: endTime},
-                    // Add more conditions as needed
-                ]
-            };
-            const available = Booking.find({ query })
-            res.status(200).json({ message: "successfully fetched all pending requests", available });
-        }
-        
-    }
-    catch (e) {
-        console.log(e)
-        res.status(500).json({ success: false, msg: "error " });
-    }
-}
+//                     // Add more conditions as needed
+//                 ]
+//             };
+//             const available = await Booking.find(query)
+//             available.map((booking) => {
+//                 if ((Date(`${booking.startDate}`) <= Date(startDate) && Date(startDate) <= Date(`${booking.endDate}`)) || (Date(`${booking.startDate}`) <= Date(endDate) && Date(startDate) <= Date(`${booking.endDate}`))) {
+
+//                 }
+//             })
+//             res.status(200).json({ message: "successfully fetched all pending requests", available });
+//         }
+//         else {
+//             const query = {
+
+//                 $and: [
+//                     { ltNumber: ltNumber },
+//                     { assistantRegistrarStatus: 'approved' },
+//                     { facultyStatus: 'approved' },
+//                     { startDate: startDate },
+//                     { endDate: endDate },
+//                     { startTime: startTime },
+//                     { endTime: endTime },
+//                     // Add more conditions as needed
+//                 ]
+//             };
+//             const available = await Booking.find(query)
+//             res.status(200).json({ message: "successfully fetched all pending requests", available });
+//         }
+
+//     }
+//     catch (e) {
+//         console.log(e)
+//         res.status(500).json({ success: false, msg: "error " });
+//     }
+// }
