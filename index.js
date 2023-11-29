@@ -15,7 +15,7 @@ const expressSession = require('express-session')
 var cors = require('cors');
 //middlewares
 
-app.use(cors({credentials:true, origin: 'http://localhost:3000'}));
+app.use(cors({credentials:true, origin: ['http://localhost:3000','https://isdl-lh-management.vercel.app']}));
 
 app.use(bodyParser.json());
 app.use(cookieParser());
