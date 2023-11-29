@@ -1,7 +1,7 @@
 const express = require("express");
 const Gsec = require("../models/gsec");
 const Booking = require("../models/Booking");
-
+const User = require('../models/user')
 module.exports.makeRequest = async (req, res) => {
   try {
     const {
@@ -93,13 +93,13 @@ module.exports.getAllRequestsByMe = async (req, res) => {
   try {
     const id = req.query.id;
     const findGsecUser = await User.findById(id);
-    // console.log(findMentor)
+    console.log(findGsecUser)
     if (!findGsecUser) {
       return res.status(404).json({ error: "User not found" });
     }
     const query1 = {
       $and: [
-        { bookedBy: findGsecUser.bookedBy },
+        { bookedBy: findGsecUser.email },
         { facultyStatus: "approved" },
         { assistantRegistrarStatus: "approved" },
         {
@@ -117,48 +117,48 @@ module.exports.getAllRequestsByMe = async (req, res) => {
     };
     const query2 = {
       $and: [
-        { bookedBy: findGsecUser.bookedBy },
+        { bookedBy: findGsecUser.email },
         {
           $or: [
             { facultyStatus: "pending" },
             { assistantRegistrarStatus: "pending" },
             {
-              $or: [
-                { avSupport: "no" },
-                {
-                  $and: [
-                    { avSupport: "yes" },
-                    { systemAdministratorStatus: "pending" },
-                  ],
-                },
+              $and: [
+                { avSupport: "yes" },
+                { systemAdministratorStatus: "pending" },
               ],
             },
           ],
         },
+        {
+          $nor: [
+            { facultyStatus: "rejected" },
+            { assistantRegistrarStatus: "rejected" },
+            { systemAdministratorStatus: "rejected" },
+          ],
+        },
       ],
     };
+    // console.log(query1)
+    
     const query3 = {
       $and: [
-        { bookedBy: findGsecUser.bookedBy },
+        { bookedBy: findGsecUser.email },
         {
           $or: [
             { facultyStatus: "rejected" },
             { assistantRegistrarStatus: "rejected" },
             {
-              $or: [
-                { avSupport: "no" },
-                {
-                  $and: [
-                    { avSupport: "yes" },
-                    { systemAdministratorStatus: "rejected" },
-                  ],
-                },
+              $and: [
+                { avSupport: "yes" },
+                { systemAdministratorStatus: "rejected" },
               ],
             },
           ],
         },
       ],
     };
+    
     const pendingRequests = await Booking.find(query2);
     const approvedRequests = await Booking.find(query1);
     const rejectedRequests = await Booking.find(query3);
