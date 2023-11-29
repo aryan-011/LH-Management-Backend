@@ -1,19 +1,97 @@
-const express = require('express');
-const Booking = require('../models/Booking')
-const AssistantRegistrar = require('../models/AssistantRegistrar');
+const express = require("express");
+const Booking = require("../models/Booking");
+const AssistantRegistrar = require("../models/AssistantRegistrar");
 
 module.exports.getAllRequests = async (req, res) => {
-    try {
-        const pendingRequests = await Booking.find({ assistantRegistrarStatus: 'pending' });
-        const approvedRequests = await Booking.find({ assistantRegistrarStatus: 'approved' });
-        const rejectedRequests = await Booking.find({ assistantRegistrarStatus: 'rejected' });
+  try {
+    const query1 = {
+      $and: [
+        { assistantRegistrarStatus: "pending" },
+        {
+          $or: [{ facultyStatus: "pending" }, { facultyStatus: "approved" }],
+        },
+        {
+          $or: [
+            { avSupport: "no" },
+            {
+              $and: [
+                { avSupport: "yes" },
+                {
+                  $or: [
+                    { systemAdministratorStatus: "pending" },
+                    { systemAdministratorStatus: "approved" },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    const query2 = {
+      $and: [
+        { assistantRegistrarStatus: "approved" },
+        {
+          $or: [{ facultyStatus: "pending" }, { facultyStatus: "approved" }],
+        },
+        {
+          $or: [
+            { avSupport: "no" },
+            {
+              $and: [
+                { avSupport: "yes" },
+                {
+                  $or: [
+                    { systemAdministratorStatus: "pending" },
+                    { systemAdministratorStatus: "approved" },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    const query3 = {
+      $and: [
+        { assistantRegistrarStatus: "rejected" },
+        {
+          $or: [{ facultyStatus: "pending" }, { facultyStatus: "approved" }],
+        },
+        {
+          $or: [
+            { avSupport: "no" },
+            {
+              $and: [
+                { avSupport: "yes" },
+                {
+                  $or: [
+                    { systemAdministratorStatus: "pending" },
+                    { systemAdministratorStatus: "approved" },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    const pendingRequests = await Booking.find(query1);
+    const approvedRequests = await Booking.find(query2);
+    const rejectedRequests = await Booking.find(query3);
 
-        res.status(200).json({ message: "successfully fetched all requests", pendingRequests, approvedRequests, rejectedRequests});
-    }
-    catch (e) {
-        res.status(500).json({ success: false, msg: "error " });
-    }
-}
+    res
+      .status(200)
+      .json({
+        message: "successfully fetched all requests",
+        pendingRequests,
+        approvedRequests,
+        rejectedRequests,
+      });
+  } catch (e) {
+    res.status(500).json({ success: false, msg: "error " });
+  }
+};
 
 // module.exports.getApprovedRequests = async (req, res) => {
 //     try {
@@ -26,26 +104,30 @@ module.exports.getAllRequests = async (req, res) => {
 // }
 
 module.exports.approveOrReject = async (req, res) => {
-    try {
-        // const {id} = req.params;
-        const { id, action } = req.body;
-        const booking = await Booking.findByIdAndUpdate(id);
-        if (!booking) {
-            return res.status(404).json({ message: 'Booking not found' });
-        }
-        if (action === 'approve') {
-            booking.assistantRegistrarStatus = 'approved';
-        } else if (action === 'reject') {
-            booking.assistantRegistrarStatus = 'rejected';
-        } else {
-            return res.status(400).json({ message: 'Invalid action' });
-        }
-
-        // Save the updated booking
-        await booking.save();
-
-        res.status(200).json({ message: `Booking ${action}d successfully`, booking});
-    } catch (error) {
-        res.status(500).json({ error: error.message,message:'some error from our side' });
+  try {
+    // const {id} = req.params;
+    const { id, action } = req.body;
+    const booking = await Booking.findByIdAndUpdate(id);
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
     }
-}
+    if (action === "approve") {
+      booking.assistantRegistrarStatus = "approved";
+    } else if (action === "reject") {
+      booking.assistantRegistrarStatus = "rejected";
+    } else {
+      return res.status(400).json({ message: "Invalid action" });
+    }
+
+    // Save the updated booking
+    await booking.save();
+
+    res
+      .status(200)
+      .json({ message: `Booking ${action}d successfully`, booking });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: error.message, message: "some error from our side" });
+  }
+};
