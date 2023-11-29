@@ -36,6 +36,7 @@ secretKey = 'your-secret-key'
     res.cookie('jwt', token, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000, // 1 day
+      sameSite: 'none'
     });
 
     res.status(201).json({ message: 'Signup successful', user: { email: newUser.email, role: newUser.role } });
@@ -73,6 +74,7 @@ module.exports.login = async (req, res) => {
     res.cookie('jwt', token, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000, // 1 day
+      sameSite:'none'
     });
 
     // Set user data in the session (if using session)
