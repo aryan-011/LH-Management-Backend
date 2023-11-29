@@ -23,7 +23,7 @@ app.use(expressSession({
     secret: 'your-secret-key',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false,sameSite: 'none', }, // Set to true if using HTTPS
+    cookie: { secure: true,sameSite: 'none', }, // Set to true if using HTTPS
 }));
 
 app.use(
