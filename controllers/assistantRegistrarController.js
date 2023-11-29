@@ -1,6 +1,6 @@
 const express = require("express");
 const Booking = require("../models/Booking");
-const AssistantRegistrar = require("../models/AssistantRegistrar");
+
 
 module.exports.getAllRequests = async (req, res) => {
   try {
