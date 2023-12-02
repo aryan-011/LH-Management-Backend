@@ -59,7 +59,7 @@ app.get('/deleteUnwanted',async (req,res)=>{
         console.error('Error occurred while deleting bookings:', err);
     }
 })
-cron.schedule('12 15 * * *',async ()=>{
+cron.schedule('22 21 * * *',async ()=>{
     const currentDate = new Date().toISOString();
     console.log('inside schedular')
     try{
