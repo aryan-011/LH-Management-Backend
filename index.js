@@ -49,7 +49,7 @@ app.get('/api/user', verifyToken, (req, res) => {
     res.status(200).json({ user: userData });
   });
 
-cron.schedule('04 02 * * *',async ()=>{
+cron.schedule('41 20 * * *',async ()=>{
     const currentDate = new Date().toISOString();
     try{
         const result = await Booking.deleteMany({ endDate: { $lt: currentDate } });
