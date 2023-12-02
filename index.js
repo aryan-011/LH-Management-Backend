@@ -48,9 +48,20 @@ app.get('/api/user', verifyToken, (req, res) => {
     const userData = req.user;  
     res.status(200).json({ user: userData });
   });
-
+app.get('/deleteUnwanted',async (req,res)=>{
+    const currentDate = new Date().toISOString();
+    console.log('inside schedular')
+    try{
+        const result = await Booking.deleteMany({ endDate: { $lt: currentDate } });
+        console.log(`${result.deletedCount} bookings deleted`);
+    }
+    catch(err){
+        console.error('Error occurred while deleting bookings:', err);
+    }
+})
 cron.schedule('41 20 * * *',async ()=>{
     const currentDate = new Date().toISOString();
+    console.log('inside schedular')
     try{
         const result = await Booking.deleteMany({ endDate: { $lt: currentDate } });
         console.log(`${result.deletedCount} bookings deleted`);
