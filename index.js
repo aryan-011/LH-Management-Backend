@@ -13,6 +13,8 @@ const verifyToken = require("./middlewares/verifyToken")
 const { connectDB } = require("./config/database");
 const expressSession = require('express-session')
 var cors = require('cors');
+const cron=require('node-cron');
+const Booking = require('./models/Booking');
 //middlewares
 
 app.use(cors({credentials:true, origin: ['http://localhost:3000','https://isdl-lh-management.vercel.app']}));
@@ -46,7 +48,17 @@ app.get('/api/user', verifyToken, (req, res) => {
     const userData = req.user;  
     res.status(200).json({ user: userData });
   });
-  
+
+cron.schedule('04 02 * * *',async ()=>{
+    const currentDate = new Date().toISOString();
+    try{
+        const result = await Booking.deleteMany({ endDate: { $lt: currentDate } });
+        console.log(`${result.deletedCount} bookings deleted`);
+    }
+    catch(err){
+        console.error('Error occurred while deleting bookings:', err);
+    }
+})
 
 app.listen(9000, () => {
     console.log("connected!");
