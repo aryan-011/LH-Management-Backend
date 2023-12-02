@@ -50,7 +50,7 @@ app.get('/api/user', verifyToken, (req, res) => {
   });
 app.get('/deleteUnwanted',async (req,res)=>{
     const currentDate = new Date().toISOString();
-    console.log('inside schedular')
+    console.log('inside schedular',new Date())
     try{
         const result = await Booking.deleteMany({ endDate: { $lt: currentDate } });
         console.log(`${result.deletedCount} bookings deleted`);
