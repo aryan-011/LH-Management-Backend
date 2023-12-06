@@ -18,7 +18,7 @@ const Booking = require("./models/Booking");
 //middlewares
 const corsOptions = {
   origin: ["http://localhost:3000", "https://isdl-lh-management.vercel.app"],
-  allowedHeaders: ["Content-Type", "Authorization", "Access-Control-Allow-Methods", "Access-Control-Request-Headers"],
+  allowedHeaders: ["Content-Type", "Authorization", "Access-Control-Allow-Origin", "Access-Control-Request-Headers"],
   credentials: true,
   enablePreflight: true
 }
