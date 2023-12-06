@@ -15,18 +15,10 @@ module.exports.makeRequest = async (req, res) => {
       facultyMentorEmail,
       startTime,
       endTime,
+      pdf,
     } = req.body;
     const query = {
       ltNumber,
-      // assistantRegistrarStatus: 'approved',
-      // facultyStatus: 'approved',
-      //   $or: [
-      //       { avSupport: 'no' }, // When avSupport is 'no', systemAdministratorStatus won't be considered
-      //       {
-      //           avSupport: 'yes',
-      //           systemAdministratorStatus: 'approved'
-      //       }
-      //   ],
       $or: [
         {
           $and: [
@@ -81,6 +73,7 @@ module.exports.makeRequest = async (req, res) => {
       avSupport,
       facultyMentorEmail,
       clubName,
+      pdf
     });
 
     await newBooking.save();

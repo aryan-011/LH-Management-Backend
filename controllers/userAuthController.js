@@ -96,6 +96,7 @@ module.exports.login = async (req, res) => {
 
 module.exports.logout = async (req, res) => {
   // Clear the JWT cookie
-  res.clearCookie('jwt');
+  res.clearCookie('jwt',{sameSite:'none',
+  secure:true});
   res.json({ message: 'Logout successful' });
 };

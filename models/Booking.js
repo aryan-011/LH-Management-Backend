@@ -44,7 +44,9 @@ const bookingSchema = new mongoose.Schema({
         enum: ['yes', 'no'],
         required: true,
     },
-
+    pdf:{
+        type:String,
+    },
     facultyStatus: {
         type: String,
         enum: ['pending', 'approved', 'rejected'],
