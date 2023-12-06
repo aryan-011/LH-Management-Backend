@@ -16,12 +16,18 @@ var cors = require("cors");
 const cron = require("node-cron");
 const Booking = require("./models/Booking");
 //middlewares
-
+var whitelist = ['http://example1.com', 'http://example2.com']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 app.use(
-  cors({
-    credentials: true,
-    origin: ["http://localhost:3000", "https://isdl-lh-management.vercel.app"],
-  })
+  cors({...corsOptions,credentials:true})
 );
 
 app.use(bodyParser.json());
