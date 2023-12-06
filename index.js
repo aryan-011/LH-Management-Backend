@@ -16,7 +16,7 @@ var cors = require("cors");
 const cron = require("node-cron");
 const Booking = require("./models/Booking");
 //middlewares
-var whitelist = ['http://example1.com', 'http://example2.com']
+var whitelist = ["http://localhost:3000", "https://isdl-lh-management.vercel.app"]
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
@@ -27,7 +27,10 @@ var corsOptions = {
   }
 }
 app.use(
-  cors({...corsOptions,credentials:true})
+  cors({
+    credentials: true,
+    origin: ["http://localhost:3000", "https://isdl-lh-management.vercel.app"],
+  })
 );
 
 app.use(bodyParser.json());
