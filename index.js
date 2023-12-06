@@ -16,22 +16,15 @@ var cors = require("cors");
 const cron = require("node-cron");
 const Booking = require("./models/Booking");
 //middlewares
-var whitelist = ["http://localhost:3000", "https://isdl-lh-management.vercel.app"]
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
+const corsOptions = {
+  origin: ["http://localhost:3000", "https://isdl-lh-management.vercel.app"],
+  allowedHeaders: ["Content-Type", "Authorization", "Access-Control-Allow-Methods", "Access-Control-Request-Headers"],
+  credentials: true,
+  enablePreflight: true
 }
-app.use(
-  cors({
-    credentials: true,
-    origin: ["http://localhost:3000", "https://isdl-lh-management.vercel.app"],
-  })
-);
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions))
 
 app.use(bodyParser.json());
 app.use(cookieParser());
